@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000;
+            color: #0F0;
+            font-family: 'Segoe UI';
+            font-size: 100px;
+        }
+
+        #base {
+            width: 60px;
+            height: 50px;
+            font-size: 30px;
+        }
+
+        #apply {
+            font-size: 30px;
+        }
+
+        #date, #time {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <p id="time"></p>
+    <p id="date"></p>
+    <input id="base" type="number" min="2" max="36" value="16">
+    <button id="apply">Apply</button>
+
+    <script>
+        var base = 16;
+
+        function padWithZeros(vNumber, width) {
+            var numAsString = vNumber.toString(base).toUpperCase();
+            while (numAsString.length < width) {
+                numAsString = "0" + numAsString;
+            }
+            return numAsString;
+        }
+
+        function updateClock() {
+            var currentTime = new Date();
+            var currentYear = padWithZeros(currentTime.getFullYear(), 4);
+            var currentMonth = padWithZeros(currentTime.getMonth() + 1, 2);
+            var currentDate = padWithZeros(currentTime.getDate(), 2);
+            var currentHours = padWithZeros(currentTime.getHours(), 2);
+            var currentMinutes = padWithZeros(currentTime.getMinutes(), 2);
+            var currentSeconds = padWithZeros(currentTime.getSeconds(), 2);
+            
+            var dateDiv = document.getElementById('date');
+            var timeDiv = document.getElementById('time');
+            
+            dateDiv.innerText = `${currentYear}/${currentMonth}/${currentDate}`;
+            timeDiv.innerText = `${currentHours}:${currentMinutes}:${currentSeconds}`;
+        }
+
+        function applyBase() {
+            var newBase = parseInt(document.getElementById('base').value);
+            if (!isNaN(newBase) && newBase >= 2 && newBase <= 36) {
+                base = newBase;
+                updateClock();
+            } else {
+                alert("Please enter an integer between 2 and 36");
+            }
+        }
+
+        document.getElementById('apply').addEventListener('click', applyBase);
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
